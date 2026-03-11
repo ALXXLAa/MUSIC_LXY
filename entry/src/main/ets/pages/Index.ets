@@ -1,23 +1,17 @@
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
-
+  tabData: string[] = ['推荐', '发现', '动态', '我的'];
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
+    Tabs({ barPosition: BarPosition.End }) {
+      ForEach(this.tabData, (item: string) => {
+        TabContent() {
+          Text(item + '内容')
+        }
+        .backgroundColor('#131215')
+        .tabBar(item)
+      })
     }
-    .height('100%')
-    .width('100%')
+    .backgroundColor('#3b3f42')
   }
 }
