@@ -1,7 +1,9 @@
+import AVPlayerManager from '../utils/AVPlayerManager';
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { SAFE_TOP, SAFE_BOTTOM } from '../constants';
+
 
 const DOMAIN = 0x0000;
 
@@ -43,6 +45,7 @@ export default class EntryAbility extends UIAbility {
       const safeBottom = mainWindow.getUIContext().px2vp(navigationArea.bottomRect.height);
       // 存储底部避让区高度
       AppStorage.setOrCreate(SAFE_BOTTOM, safeBottom);
+      AVPlayerManager.init();//新增
 
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));

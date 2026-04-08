@@ -15,9 +15,11 @@ interface TopicType {
 }
 
 @Component
-export default  struct Find {
+export default struct Find {
   @State private searchText: string = '';
   @State songs: SongItemType[] = [];
+  router = this.getUIContext().getRouter();
+
   @State private categories: CategoryType[] = [
     { id: 1, name: '排行榜', icon: $r('app.media.ic_auto') },
     { id: 2, name: '歌单', icon: $r('app.media.ic_song_list') },
@@ -59,7 +61,6 @@ export default  struct Find {
           .fontColor(Color.White)
           .borderRadius(20)
           .onClick(() => {
-            // 搜索逻辑
             console.log('搜索关键词:', this.searchText);
           })
       }
@@ -114,7 +115,7 @@ export default  struct Find {
         .padding({ left: 15 })
 
       List() {
-        ForEach(this.songs, (item: SongItemType) => {
+        ForEach(this.songs, (item: SongItemType, index) => {
           ListItem() {
             Row({ space: 10 }) {
               // 封面图
@@ -122,6 +123,7 @@ export default  struct Find {
                 .width(80)
                 .aspectRatio(1)
                 .borderRadius(8)
+
               Column({ space: 15 }) {
                 // 歌曲名称
                 Text(item.title)
@@ -129,6 +131,7 @@ export default  struct Find {
                   .fontWeight(700)
                   .fontSize(16)
                   .width('100%')
+
                 Row({ space: 8 }) {
                   Text('VIP')
                     .fontSize(14)
@@ -143,6 +146,7 @@ export default  struct Find {
                 .width('100%')
               }
               .layoutWeight(1)
+
               Image($r('app.media.ic_more'))
                 .width(24)
                 .fillColor('#fff')
@@ -151,10 +155,20 @@ export default  struct Find {
             .margin({ bottom: 10 })
             .padding({ left: 15, right: 15 })
           }
+          // ✅ 正确的 onClick 位置
+          .onClick(() => {
+            this.router.pushUrl({
+              url: 'pages/Play',
+              params: {
+                song: item,
+                playList: this.songs,
+                index: index
+              }
+            });
+          })
         })
       }
       .width('100%')
-      .height('100%')
       .layoutWeight(1)
     }
     .width('100%')
